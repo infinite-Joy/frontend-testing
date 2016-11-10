@@ -6,10 +6,6 @@ from urllib.request import urlopen, HTTPError, URLError
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 URL = "https://flawcode.com"
@@ -38,9 +34,11 @@ logger.addHandler(fileHandler)
 # logger.setLevel(logging.DEBUG)
 logger.setLevel(logging.INFO)
 
-# this is to implement the singleton
-# we do not want multiple instances of browser being implemented
 class SingletonMetaClass(type):
+    """
+    this is to implement the singleton
+    we do not want multiple instances of browser being implemented
+    """
     def __init__(cls, name, bases, dict):
         super(SingletonMetaClass, cls)\
           .__init__(name, bases, dict)
@@ -97,13 +95,14 @@ class Browser(object):
             for i in range(1, 10):
                 yield self.browser.find_element(By.XPATH,
                                              ".//*[@id='app']/div[1]/a[%s]" % i)
+
         except:
             pass
 
     def validate_url(self, url):
         self.logger.info("To test the url %s" % url)
         try:
-            r = urlopen(url)
+            urlopen(url)
             return True
         except HTTPError as e:
                 print(e.code)
